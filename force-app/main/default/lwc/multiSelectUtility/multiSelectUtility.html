@@ -1,0 +1,76 @@
+<template>
+    <lightning-card title="Multi-Select Picklist">
+        <lightning-button 
+            label="Refresh Options" 
+            slot="actions" 
+            onclick={fetchSelectedValues}>
+        </lightning-button>
+        <div class="slds-form-element selectbox slds-p-horizontal_medium">
+            <label class="slds-form-element__label" id="combobox-label" for="combobox-input">{picklistlabel}</label>
+    
+            <div class="slds-form-element__control slds-p-top_medium slds-m-bottom_medium">
+                <div class="slds-combobox_container slds-size_small">
+                    <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
+                        aria-expanded="true" 
+                        aria-haspopup="listbox"
+                        aria-labelledby="combobox-label"
+                        aria-controls="listbox-dropdown"
+                        tabindex="0"
+                        role="combobox" 
+                        onmouseleave={handleMouseLeave}>
+                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                            <input 
+                                type="text"
+                                class="slds-input slds-combobox__input slds-has-focus slds-combobox__input-value"
+                                id="combobox-input" 
+                                aria-controls="listbox-dropdown" 
+                                role="textbox"
+                                placeholder="Select an Option" 
+                                readonly 
+                                value={selectedmessage}
+                                onclick={handleShowdropdown} />
+                            <span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+                                <lightning-icon 
+                                    icon-name="utility:down" 
+                                    size="x-small" 
+                                    aria-hidden="true"
+                                    alternative-text="Show dropdown options">
+                                </lightning-icon>
+                            </span>
+                        </div>
+    
+                        <!-- Dropdown section -->
+                        <template if:true={showdropdown}>
+                            <div 
+                                id="listbox-dropdown" 
+                                class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid"
+                                role="listbox">
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    <template for:each={values} for:item="eachvalue">
+                                        <c-picklist-value 
+                                            key={eachvalue.label} 
+                                            label={eachvalue.label}
+                                            value={eachvalue.value} 
+                                            selected={eachvalue.selected}>
+                                        </c-picklist-value>
+                                    </template>
+                                </ul>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                
+                <!-- Selected Pills section -->
+                <template if:true={showPills}>
+                    <div class="slds-listbox_selection-group slds-p-top_medium slds-p-bottom_xx-large">
+                        <ul class="slds-listbox slds-listbox_horizontal" >
+                            <template for:each={selectedvalues} for:item="eachvalue">
+                                <lightning-pill class="slds-listbox-item" key={eachvalue} label={eachvalue} onremove={closePill}></lightning-pill>
+                            </template>
+                        </ul>
+                    </div>
+                </template>                
+            </div>
+        </div>
+    </lightning-card>
+</template>
